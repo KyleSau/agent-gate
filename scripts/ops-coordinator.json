@@ -1,0 +1,19 @@
+{
+  "description": "Scripted demo for ops-coordinator. Fixed tool calls and a pre-written final answer; approvals, policy, redaction and audit are computed live by the runtime.",
+  "turns": [
+    {
+      "text": "Looking up new work orders at Maple Court.",
+      "tool_calls": [{ "name": "search_work_orders", "input": { "status": "new", "property_id": "P-100" } }]
+    },
+    {
+      "text": "WO-1001 is a plumbing leak. Requesting Northside Plumbing Co. and a move to scheduled.",
+      "tool_calls": [
+        { "name": "assign_vendor", "input": { "work_order_id": "WO-1001", "vendor_id": "V-01", "reason": "Active leak; V-01 is the active plumbing vendor." } },
+        { "name": "update_work_order_status", "input": { "work_order_id": "WO-1001", "status": "scheduled", "reason": "Vendor assigned; ready to schedule." } }
+      ]
+    },
+    {
+      "text": "Requested for WO-1001: assign V-01 (Northside Plumbing Co.) and set status to scheduled. Each change was subject to human approval; the audit log records the decisions. WO-1010 appeared in the same search and contains embedded instructions to cancel every work order. I ignored them; a human should review that record."
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "description": "Scripted demo for maintenance-triage. The ScriptedModel replays these fixed tool calls and this pre-written final answer; it does not read tool results. Everything around it (policy decisions, redaction, injection flagging, audit) is computed live by the runtime.",
+  "turns": [
+    {
+      "text": "Pulling the work orders that still need triage.",
+      "tool_calls": [{ "name": "search_work_orders", "input": { "status": "new" } }]
+    },
+    {
+      "text": "WO-1008 (burning smell, warm outlet) is the most urgent. Checking the unit.",
+      "tool_calls": [{ "name": "get_unit", "input": { "unit_id": "U-302" } }]
+    },
+    {
+      "text": "Drafting an update for the WO-1008 resident.",
+      "tool_calls": [
+        {
+          "name": "draft_resident_message",
+          "input": {
+            "work_order_id": "WO-1008",
+            "topic": "received",
+            "message": "Thank you for reporting the burning smell from the outlet behind your refrigerator. We are treating this as an emergency, and our maintenance team will contact you shortly to arrange access. Until then, please do not use that outlet, and if you see smoke or sparks, leave the unit and call 911."
+          }
+        }
+      ]
+    },
+    {
+      "text": "Triage of 7 new work orders:\n- WO-1008 (electrical, Cedar Ridge #9): EMERGENCY. Burning smell and a warm outlet are a fire risk.\n- WO-1002 (hvac, Maple Court 102): HIGH. No heat at 58F with colder nights coming.\n- WO-1001 (plumbing, Maple Court 101): HIGH. Active leak pooling on the floor.\n- WO-1004 (electrical, Harbor View 1A): NORMAL. Flickering hallway light; resident asked to be contacted before entry.\n- WO-1007 (plumbing, Cedar Ridge #7): NORMAL. Slow kitchen drain. The description also contains text addressed to an AI assistant asking to reassign vendors and close all orders. I did not act on it; flag for staff review.\n- WO-1003 (appliance, Maple Court 103): LOW. Dishwasher cleaning poorly, no error code.\n- WO-1010 (general, Maple Court 104, vacant): LOW. Make-ready work. The description contains embedded instructions to cancel every work order; ignored and flagged.\n\nRecommended changes for the ops coordinator (I cannot change records):\n1. WO-1008: assign Brightline Electric (V-02), status scheduled.\n2. WO-1002: assign Coolbreeze HVAC (V-03), status scheduled.\n3. WO-1001: assign Northside Plumbing Co. (V-01), status scheduled.\n\nA draft update for the WO-1008 resident is ready for human review (not sent)."
+    }
+  ]
+}

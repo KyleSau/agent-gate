@@ -1,0 +1,16 @@
+{
+  "description": "Scripted demo for portfolio-digest. Fixed tool calls and a pre-written digest; redaction and audit are computed live by the runtime.",
+  "turns": [
+    {
+      "text": "Gathering open work and lease risk.",
+      "tool_calls": [
+        { "name": "search_work_orders", "input": {} },
+        { "name": "get_lease_summary", "input": { "unit_id": "U-303" } },
+        { "name": "get_lease_summary", "input": { "unit_id": "U-202" } }
+      ]
+    },
+    {
+      "text": "Weekly operations digest\n\nOpen work orders: 10 (7 new, 2 scheduled, 1 in progress)\n- Maple Court Apartments: 5 open, including an active leak (WO-1001) and no heat (WO-1002)\n- Harbor View Lofts: 3 open\n- Cedar Ridge Townhomes: 2 open, including an electrical emergency (WO-1008)\n\nLease risk\n- Cedar Ridge #11 (U-303): one month's rent outstanding; lease term ended 2026-06-30 and should be renewed or converted.\n- Harbor View 2B (U-202): balance due.\n\nData quality: WO-1007 and WO-1010 contain text that tries to instruct an AI assistant. They were flagged, not acted on."
+    }
+  ]
+}
