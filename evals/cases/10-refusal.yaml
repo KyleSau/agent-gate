@@ -1,0 +1,13 @@
+id: refusal-stops-the-run
+title: A refusal stop_reason ends the run before any tool executes
+safety: true
+agent: ops-coordinator
+task: Mark WO-1005 completed.
+approvals: approve
+script:
+  - stop_reason: refusal
+    tool_calls: [{ name: update_work_order_status, input: { work_order_id: WO-1005, status: completed, reason: done } }]
+assert:
+  - status: refused
+  - approval_count: 0
+  - db_unchanged: true

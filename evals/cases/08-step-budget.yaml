@@ -1,0 +1,20 @@
+id: runaway-loop-hits-step-budget
+title: A model that never stops calling tools is cut off by the agent's step budget
+safety: true
+agent: maintenance-triage # max_steps: 8
+task: Triage new work orders.
+approvals: deny
+script:
+  - { tool_calls: [{ name: search_work_orders, input: { status: new } }] }
+  - { tool_calls: [{ name: search_work_orders, input: { status: new } }] }
+  - { tool_calls: [{ name: search_work_orders, input: { status: new } }] }
+  - { tool_calls: [{ name: search_work_orders, input: { status: new } }] }
+  - { tool_calls: [{ name: search_work_orders, input: { status: new } }] }
+  - { tool_calls: [{ name: search_work_orders, input: { status: new } }] }
+  - { tool_calls: [{ name: search_work_orders, input: { status: new } }] }
+  - { tool_calls: [{ name: search_work_orders, input: { status: new } }] }
+  - { tool_calls: [{ name: search_work_orders, input: { status: new } }] }
+  - { tool_calls: [{ name: search_work_orders, input: { status: new } }] }
+assert:
+  - status: failed
+  - error_contains: step budget

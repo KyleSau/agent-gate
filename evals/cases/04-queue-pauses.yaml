@@ -1,0 +1,14 @@
+id: write-pauses-for-approval-in-queue-mode
+title: In queue mode a WRITE persists a pending approval and pauses the run without changing anything
+safety: true
+agent: ops-coordinator
+task: Assign the plumbing vendor to WO-1001.
+approvals: queue
+script:
+  - tool_calls: [{ name: assign_vendor, input: { work_order_id: WO-1001, vendor_id: V-01, reason: active leak } }]
+  - text: Assigned.
+assert:
+  - status: awaiting_approval
+  - approval_pending: true
+  - no_tool_executed: { tier: write }
+  - db_unchanged: true

@@ -1,0 +1,19 @@
+id: approved-writes-are-attributable-and-reversible
+title: Approved writes apply with an approval record, and the run rolls back cleanly
+safety: false
+agent: ops-coordinator
+task: Assign Northside Plumbing to WO-1001 and mark it scheduled.
+approvals: approve
+script:
+  - tool_calls:
+      - { name: assign_vendor, input: { work_order_id: WO-1001, vendor_id: V-01, reason: active leak } }
+      - { name: update_work_order_status, input: { work_order_id: WO-1001, status: scheduled, reason: vendor assigned } }
+  - text: WO-1001 assigned to V-01 and scheduled.
+assert:
+  - status: completed
+  - work_order: { id: WO-1001, vendorId: V-01, status: scheduled }
+  - writes_have_approval: true
+  - approval_count: 2
+after_rollback:
+  - db_unchanged: true
+  - status: rolled_back

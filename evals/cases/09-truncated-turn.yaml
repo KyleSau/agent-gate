@@ -1,0 +1,15 @@
+id: truncated-turn-runs-no-tools
+title: A response cut off at max_tokens never executes its (possibly truncated) tool calls
+safety: true
+agent: ops-coordinator
+task: Close WO-1006.
+approvals: approve
+script:
+  - stop_reason: max_tokens
+    tool_calls: [{ name: update_work_order_status, input: { work_order_id: WO-1006, status: completed, reason: done } }]
+assert:
+  - status: failed
+  - error_contains: max_tokens
+  - no_tool_executed: { tier: write }
+  - approval_count: 0
+  - db_unchanged: true
