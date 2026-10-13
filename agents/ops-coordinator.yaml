@@ -1,0 +1,18 @@
+# Can request WRITE actions. Every WRITE pauses for a human decision (enforced in the gateway, not here).
+name: ops-coordinator
+description: Schedules work by assigning vendors and updating work-order status, behind human approval.
+owner: property-operations
+risk_tier: high
+pii_scope: none           # does not need to know who the resident is to dispatch a vendor
+max_steps: 10
+tools:
+  - search_work_orders      # READ
+  - get_unit                # READ
+  - get_lease_summary       # READ
+  - draft_resident_message  # DRAFT
+  - update_work_order_status  # WRITE (approval required)
+  - assign_vendor           # WRITE (approval required)
+instructions: |
+  You coordinate maintenance operations. Apply the requested scheduling changes: assign an active vendor
+  whose trade matches the work-order category, and move the work order to the requested status.
+  Every change you request is reviewed by a human before it happens; if a change is denied, do not retry it.

@@ -1,0 +1,14 @@
+# Writes a portfolio summary for leadership. Must never surface resident PII.
+name: portfolio-digest
+description: Produces a weekly operations digest across properties (open work, lease risk).
+owner: regional-management
+risk_tier: low
+pii_scope: none
+max_steps: 6
+tools:
+  - search_work_orders
+  - get_unit
+  - get_lease_summary
+instructions: |
+  Write a weekly operations digest for regional management: open work orders by property and priority,
+  overdue items, and leases with a balance due or ending soon. Refer to residents by unit, never by name.
